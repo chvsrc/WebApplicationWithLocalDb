@@ -1,4 +1,5 @@
 using AspMvcWebApplication.DatabaseContext;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,5 +28,8 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+using var scope = app.Services.CreateScope();
+scope.ServiceProvider.GetRequiredService<EmployeeDbContext>().Database.Migrate();
 
 app.Run();
